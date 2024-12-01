@@ -1,10 +1,14 @@
 import { Button, Text, View } from "react-native";
 
-import { getAppIcon, setAppIcon } from "expo-dynamic-app-icon";
+import {
+  getAppIcon,
+  IconName,
+  setAppIcon,
+} from "@mozzius/expo-dynamic-app-icon";
 import { useState } from "react";
 
 export default function App() {
-  const [iconName, setIconName] = useState<string>();
+  const [iconName, setIconName] = useState<IconName | "DEFAULT">();
 
   return (
     <View

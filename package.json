@@ -4,6 +4,9 @@
   "description": "Programmatically change the app icon in Expo.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "build": "expo-module build",
     "build:plugin": "tsc --build ./plugin",
