@@ -7,12 +7,15 @@ import {
   withXcodeProject,
   withAndroidManifest,
   AndroidConfig,
+  ExportedConfigWithProps,
 } from "@expo/config-plugins";
 import { generateImageAsync } from "@expo/image-utils";
 import fs from "fs";
 import path from "path";
 // @ts-ignore - no types
 import pbxFile from "xcode/lib/pbxFile";
+
+const moduleRoot = path.join(__dirname, "..", "..");
 
 const { getMainApplicationOrThrow, getMainActivityOrThrow } =
   AndroidConfig.Manifest;
@@ -71,6 +74,8 @@ const withDynamicIcon: ConfigPlugin<string[] | IconSet | void> = (
   const icons = resolveIcons(props);
   const dimensions = resolveIconDimensions(config);
 
+  config = withGenerateTypes(config, { icons });
+
   // for ios
   config = withIconXcodeProject(config, { icons, dimensions });
   config = withIconInfoPlist(config, { icons, dimensions });
@@ -82,6 +87,24 @@ const withDynamicIcon: ConfigPlugin<string[] | IconSet | void> = (
 
   return config;
 };
+
+// =============================================================================
+//                                   TypeScript
+// =============================================================================
+
+function withGenerateTypes(config: ExpoConfig, props: { icons: IconSet }) {
+  const names = Object.keys(props.icons);
+  const union = names.map((name) => `"${name}"`).join(" | ") || "string";
+
+  const unionType = `IconName: ${union}`;
+
+  const buildFile = path.join(moduleRoot, "build", "types.d.ts");
+  const buildFileContent = fs.readFileSync(buildFile, "utf8");
+  const updatedContent = buildFileContent.replace(/IconName:\s.*/, unionType);
+  fs.writeFileSync(buildFile, updatedContent);
+
+  return config;
+}
 
 // =============================================================================
 //                                    Android
