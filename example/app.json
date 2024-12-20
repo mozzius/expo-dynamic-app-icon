@@ -34,14 +34,16 @@
         "@mozzius/expo-dynamic-app-icon",
         {
           "light": {
-            "ios": "./assets/ios_icon_default_light.png",
-            "android": "./assets/android_icon_default_light.png",
-            "prerendered": true
+            "ios": "./assets/ios_icon_light.png",
+            "android": "./assets/android_icon_default_light.png"
           },
           "dark": {
-            "ios": "./assets/ios_icon_default_dark.png",
-            "android": "./assets/android_icon_default_dark.png",
-            "prerendered": true
+            "ios": {
+              "light": "./assets/ios_icon_dark.png",
+              "dark": "./assets/ios_icon_dark_dark.png",
+              "tinted": "./assets/ios_icon_dark_tinted.png"
+            },
+            "android": "./assets/android_icon_default_dark.png"
           }
         }
       ]

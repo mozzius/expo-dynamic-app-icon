@@ -7,6 +7,7 @@
 > - support for resetting the icon to the default
 > - round icon support
 > - different icons for Android and iOS
+> - dynamic icon variants for iOS
 
 Programmatically change the app icon in Expo.
 
@@ -21,21 +22,27 @@ npx expo install @mozzius/expo-dynamic-app-icon
 add plugins in `app.json`
 
 ```typescript
- "plugins": [
-      [
-        "expo-dynamic-app-icon",
-        {
-          "red": { // icon name
-            "ios": "./assets/ios_icon1.png", // icon path for ios
-            "android": "./assets/android_icon1.png", // icon path for android
-            "prerendered": true // for ios UIPrerenderedIcon option
-          },
-          "gray": {
-            "android": "./assets/icon2.png", // android-only icon
-          }
-        }
-      ]
-    ]
+"plugins": [
+  [
+    "@mozzius/expo-dynamic-app-icon",
+    {
+      "red": { // icon name
+        "ios": "./assets/ios_icon1.png", // icon path for iOS
+        "android": "./assets/android_icon1.png", // icon path for Android
+      },
+      "gray": {
+        "android": "./assets/icon2.png", // Android-only icon
+      },
+      "dynamic": {
+        "ios": { // iOS dynamic icon variants
+          "light": "./assets/ios_icon_light.png",
+          "dark": "./assets/ios_icon_dark.png",
+          "tinted": "./assets/ios_icon_tinted.png",
+        },
+      }
+    }
+  ]
+]
 ```
 
 ## Check AndroidManifest (for android)
