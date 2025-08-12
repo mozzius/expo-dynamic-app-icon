@@ -1,4 +1,4 @@
-import type { ExpoConfig } from "@expo/config";
+import type { ExpoConfig } from "expo/config";
 import {
   ConfigPlugin,
   IOSConfig,
@@ -7,8 +7,7 @@ import {
   withXcodeProject,
   withAndroidManifest,
   AndroidConfig,
-  ExportedConfigWithProps,
-} from "@expo/config-plugins";
+} from "expo/config-plugins";
 import { generateImageAsync } from "@expo/image-utils";
 import fs from "fs";
 import path from "path";
