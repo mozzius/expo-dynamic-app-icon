@@ -25,13 +25,13 @@
     "expo-dynamic-app-icon",
     "ExpoDynamicAppIcon"
   ],
-  "repository": "https://github.com/mozzius/expo-dynamic-app-icon",
+  "repository": "https://tangled.sh/@samuel.bsky.team/expo-dynamic-app-icon",
   "bugs": {
-    "url": "https://github.com/mozzius/expo-dynamic-app-icon/issues"
+    "url": "https://tangled.sh/@samuel.bsky.team/expo-dynamic-app-icon/issues"
   },
   "author": "Samuel Newman <mozzius@protonmail.com> (https://github.com/mozzius)",
   "license": "MIT",
-  "homepage": "https://github.com/mozzius/expo-dynamic-app-icon#readme",
+  "homepage": "https://tangled.sh/@samuel.bsky.team/expo-dynamic-app-icon#readme",
   "dependencies": {
     "@expo/image-utils": "^0.6.3",
     "xcode": "^3.0.1"
