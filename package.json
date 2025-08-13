@@ -33,17 +33,17 @@
   "license": "MIT",
   "homepage": "https://github.com/mozzius/expo-dynamic-app-icon#readme",
   "dependencies": {
-    "expo-modules-core": "^2.1.1",
     "@expo/image-utils": "^0.6.3",
     "xcode": "^3.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.25",
     "@types/react-native": "^0.70.6",
+    "expo": "^53.0.20",
     "expo-module-scripts": "^4.0.2"
   },
   "peerDependencies": {
-    "expo": "^52",
+    "expo": "^52 || ^53",
     "react": "*",
     "react-native": "*"
   }

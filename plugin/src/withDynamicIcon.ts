@@ -1,5 +1,5 @@
-import type { ExpoConfig } from "@expo/config";
 import {
+  ExportedConfig,
   ConfigPlugin,
   IOSConfig,
   withDangerousMod,
@@ -7,8 +7,7 @@ import {
   withXcodeProject,
   withAndroidManifest,
   AndroidConfig,
-  ExportedConfigWithProps,
-} from "@expo/config-plugins";
+} from "expo/config-plugins";
 import { generateImageAsync } from "@expo/image-utils";
 import fs from "fs";
 import path from "path";
@@ -92,7 +91,7 @@ const withDynamicIcon: ConfigPlugin<string[] | IconSet | void> = (
 //                                   TypeScript
 // =============================================================================
 
-function withGenerateTypes(config: ExpoConfig, props: { icons: IconSet }) {
+function withGenerateTypes(config: ExportedConfig, props: { icons: IconSet }) {
   const names = Object.keys(props.icons);
   const union = names.map((name) => `"${name}"`).join(" | ") || "string";
 
@@ -485,7 +484,7 @@ function resolveIcons(props: string[] | IconSet | void): Props["icons"] {
 }
 
 /** Resolve the required icon dimension/target based on the app config. */
-function resolveIconDimensions(config: ExpoConfig): Required<IconDimensions>[] {
+function resolveIconDimensions(config: ExportedConfig): Required<IconDimensions>[] {
   const targets: NonNullable<IconDimensions["target"]>[] = [];
 
   if (config.ios?.supportsTablet) {
