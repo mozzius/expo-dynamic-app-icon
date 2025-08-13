@@ -15,6 +15,8 @@ class ExpoDynamicAppIconModule : Module() {
                 SharedObject.pm = pm
                 SharedObject.shouldChangeIcon = true
 
+                var result: String
+
                 if (name == null) {
                     // Resetting to default icon if nothing passed
                     var currentIcon =
@@ -23,12 +25,10 @@ class ExpoDynamicAppIconModule : Module() {
 
                     SharedObject.classesToKill.add(currentIcon)
                     SharedObject.icon = context.packageName + ".MainActivity"
-
-                    return@Function "DEFAULT"
+                    result = "DEFAULT"
                 } else {
-
-                    var newIcon: String = context.packageName + ".MainActivity" + name
-                    var currentIcon: String =
+                    var newIcon = context.packageName + ".MainActivity" + name
+                    var currentIcon =
                             if (!SharedObject.icon.isEmpty()) SharedObject.icon
                             else context.packageName + ".MainActivity"
 
@@ -38,9 +38,17 @@ class ExpoDynamicAppIconModule : Module() {
 
                     SharedObject.classesToKill.add(currentIcon)
                     SharedObject.icon = newIcon
-
-                    return@Function name
+                    result = name
                 }
+
+                // background the app to trigger icon change
+                try {
+                    currentActivity.moveTaskToBack(true)
+                } catch (e: Exception) {
+                    // do nothing
+                }
+
+                return@Function result
             } catch (e: Exception) {
                 return@Function false
             }
