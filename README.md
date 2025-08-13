@@ -49,18 +49,19 @@ check added line
 
 ```xml
   ...
-    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivityred" android:enabled="false" android:exported="true" android:icon="@mipmap/red" android:targetActivity=".MainActivity">
+    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivitylight" android:enabled="false" android:exported="true" android:icon="@mipmap/light" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/light_round">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity-alias>
-    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivitygray" android:enabled="false" android:exported="true" android:icon="@mipmap/gray" android:targetActivity=".MainActivity">
+    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivitydark" android:enabled="false" android:exported="true" android:icon="@mipmap/dark" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/dark_round">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity-alias>
+  </application>
   ...
 ```
 
@@ -73,6 +74,8 @@ create a new `expo-dev-client` and begin using `expo-dynamic-app-icon`
 - if error, return **false**
 - else, return **changed app icon name**
 - pass `null` to reset app icon to default
+
+> Note: this causes the app to close on Android, and a popup to appear on iOS
 
 ```typescript
 import { setAppIcon } from "expo-dynamic-app-icon";
