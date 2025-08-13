@@ -21,7 +21,9 @@ export default function App() {
     >
       <View style={{ marginBottom: 16 }}>
         <Button title="get icon!" onPress={() => setIconName(getAppIcon())} />
-        <Text>{iconName || "Press Button!"}</Text>
+        <Text style={{ textAlign: "center" }}>
+          {iconName || "Press Button!"}
+        </Text>
       </View>
 
       <View style={{ marginBottom: 16 }}>
