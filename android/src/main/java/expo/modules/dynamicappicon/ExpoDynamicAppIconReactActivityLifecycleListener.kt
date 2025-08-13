@@ -34,9 +34,10 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
         if (SharedObject.shouldChangeIcon) {
             applyIconChange(activity)
             // Force close the app after icon change to ensure clean restart
-            handler.postDelayed({
-                forceCloseApp(activity)
-            }, 500) // Small delay to ensure icon change completes
+            handler.postDelayed(
+                    { forceCloseApp(activity) },
+                    500
+            ) // Small delay to ensure icon change completes
         }
     }
 
@@ -59,7 +60,7 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
     private fun onBackground() {
         // This method is no longer used since we apply changes immediately in onPause
     }
-    
+
     private fun forceCloseApp(activity: Activity) {
         try {
             // Force close the app process to ensure clean restart
@@ -71,84 +72,82 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
     }
 
     private fun applyIconChange(activity: Activity) {
-        SharedObject.icon
-            .takeIf { it.isNotEmpty() }
-            ?.let { icon ->
-                val pm = SharedObject.pm ?: return
-                val newComponent = ComponentName(SharedObject.packageName, icon)
+        SharedObject.icon.takeIf { it.isNotEmpty() }?.let { icon ->
+            val pm = SharedObject.pm ?: return
+            val newComponent = ComponentName(SharedObject.packageName, icon)
 
-                if (!doesComponentExist(newComponent)) {
-                    SharedObject.shouldChangeIcon = false
-                    return
-                }
+            if (!doesComponentExist(newComponent)) {
+                SharedObject.shouldChangeIcon = false
+                return
+            }
 
-                try {
-                    // Get all launcher activities and disable all except the new one
-                    val packageInfo =
+            try {
+                // Get all launcher activities and disable all except the new one
+                val packageInfo =
                         pm.getPackageInfo(
-                            SharedObject.packageName,
-                            PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
+                                SharedObject.packageName,
+                                PackageManager.GET_ACTIVITIES or
+                                        PackageManager.GET_DISABLED_COMPONENTS
                         )
 
-                    packageInfo.activities?.forEach { activityInfo ->
-                        val componentName =
-                            ComponentName(SharedObject.packageName, activityInfo.name)
-                        val state = pm.getComponentEnabledSetting(componentName)
+                packageInfo.activities?.forEach { activityInfo ->
+                    val componentName = ComponentName(SharedObject.packageName, activityInfo.name)
+                    val state = pm.getComponentEnabledSetting(componentName)
 
-                        if (
-                            activityInfo.name != icon &&
-                                state != PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                        ) {
-                            pm.setComponentEnabledSetting(
+                    if (activityInfo.name != icon &&
+                                    state != PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    ) {
+                        pm.setComponentEnabledSetting(
                                 componentName,
                                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                                 PackageManager.DONT_KILL_APP
-                            )
-                            Log.i("IconChange", "Disabled component: ${activityInfo.name}")
-                        }
+                        )
+                        Log.i("IconChange", "Disabled component: ${activityInfo.name}")
                     }
+                }
 
-                    // Enable the new icon
-                    pm.setComponentEnabledSetting(
+                // Enable the new icon
+                pm.setComponentEnabledSetting(
                         newComponent,
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP
-                    )
-                    Log.i("IconChange", "Enabled new icon: $icon")
-                } catch (e: Exception) {
-                    Log.e("IconChange", "Error during icon change", e)
-                } finally {
-                    SharedObject.shouldChangeIcon = false
-                }
-
-                // Ensure at least one component is enabled
-                ensureAtLeastOneComponentEnabled(activity)
+                )
+                Log.i("IconChange", "Enabled new icon: $icon")
+            } catch (e: Exception) {
+                Log.e("IconChange", "Error during icon change", e)
+            } finally {
+                SharedObject.shouldChangeIcon = false
             }
+
+            // Ensure at least one component is enabled
+            ensureAtLeastOneComponentEnabled(activity)
+        }
     }
 
     private fun ensureAtLeastOneComponentEnabled(context: Context) {
         val pm = SharedObject.pm ?: return
         val packageInfo =
-            pm.getPackageInfo(
-                SharedObject.packageName,
-                PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
-            )
+                pm.getPackageInfo(
+                        SharedObject.packageName,
+                        PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
+                )
 
         val hasEnabledComponent =
-            packageInfo.activities?.any { activityInfo ->
-                val componentName = ComponentName(SharedObject.packageName, activityInfo.name)
-                pm.getComponentEnabledSetting(componentName) ==
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-            } ?: false
+                packageInfo.activities?.any { activityInfo ->
+                    val componentName = ComponentName(SharedObject.packageName, activityInfo.name)
+                    pm.getComponentEnabledSetting(componentName) ==
+                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                }
+                        ?: false
 
         if (!hasEnabledComponent) {
             val mainActivityName = "${SharedObject.packageName}.MainActivity"
             val mainComponent = ComponentName(SharedObject.packageName, mainActivityName)
             try {
                 pm.setComponentEnabledSetting(
-                    mainComponent,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP
+                        mainComponent,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP
                 )
                 Log.i("IconChange", "No active component found. Re-enabling $mainActivityName")
             } catch (e: Exception) {
@@ -161,17 +160,16 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
     private fun doesComponentExist(componentName: ComponentName): Boolean {
         return try {
             val packageInfo =
-                SharedObject.pm?.getPackageInfo(
-                    SharedObject.packageName,
-                    PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
-                )
+                    SharedObject.pm?.getPackageInfo(
+                            SharedObject.packageName,
+                            PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
+                    )
 
             val activityExists =
-                packageInfo?.activities?.any { it.name == componentName.className } == true
+                    packageInfo?.activities?.any { it.name == componentName.className } == true
 
             activityExists
         } catch (e: Exception) {
-
             false
         }
     }
