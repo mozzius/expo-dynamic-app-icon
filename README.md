@@ -1,7 +1,6 @@
 # @mozzius/expo-dynamic-app-icon
 
-> [!NOTE]
-> This is a fork of [expo-dynamic-app-icon](https://github.com/outsung/expo-dynamic-app-icon) to support Expo SDK 51.
+> This is a fork of [expo-dynamic-app-icon](https://github.com/outsung/expo-dynamic-app-icon) to support Expo SDK 51+.
 > It also includes:
 >
 > - support for resetting the icon to the default
