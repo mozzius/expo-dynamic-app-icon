@@ -232,8 +232,7 @@ const withIconAndroidImages: ConfigPlugin<Props> = (config, { icons }) => {
               {
                 name: fileName,
                 src: android,
-                removeTransparency: true,
-                backgroundColor: "#ffffff",
+                removeTransparency: false,
                 resizeMode: "cover",
                 width: size,
                 height: size,
