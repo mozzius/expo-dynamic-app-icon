@@ -16,7 +16,7 @@ Programmatically change the app icon in Expo.
 npx expo install @mozzius/expo-dynamic-app-icon
 ```
 
-## Set icon file
+### Set icon file
 
 add plugins in `app.json`
 
@@ -38,41 +38,39 @@ add plugins in `app.json`
     ]
 ```
 
-## Check AndroidManifest (for android)
+#### Optional: check AndroidManifest (for android)
 
-```
-expo prebuild
-```
-
-check added line
-[AndroidManifest.xml](./example/android/app/src/main/AndroidManifest.xml#L33-L44)
+After running `expo prebuild`, check the modifications to your `AndroidManifest.xml`. Additional `activity-alias` are added for each icon.
 
 ```xml
   ...
-    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivityred" android:enabled="false" android:exported="true" android:icon="@mipmap/red" android:targetActivity=".MainActivity">
+    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivitylight" android:enabled="false" android:exported="true" android:icon="@mipmap/light" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/light_round">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity-alias>
-    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivitygray" android:enabled="false" android:exported="true" android:icon="@mipmap/gray" android:targetActivity=".MainActivity">
+    <activity-alias android:name="expo.modules.dynamicappicon.example.MainActivitydark" android:enabled="false" android:exported="true" android:icon="@mipmap/dark" android:targetActivity=".MainActivity" android:roundIcon="@mipmap/dark_round">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity-alias>
+  </application>
   ...
 ```
 
-## Create new `expo-dev-client`
+### Create new `expo-dev-client`
 
-create a new `expo-dev-client` and begin using `expo-dynamic-app-icon`
+Create a new `expo-dev-client` and begin using `expo-dynamic-app-icon`!
 
-## Use `setAppIcon`
+### Use `setAppIcon`
 
 - if error, return **false**
 - else, return **changed app icon name**
 - pass `null` to reset app icon to default
+
+> Note: this causes the app to close on Android, and a popup to appear on iOS
 
 ```typescript
 import { setAppIcon } from "expo-dynamic-app-icon";
@@ -82,7 +80,7 @@ import { setAppIcon } from "expo-dynamic-app-icon";
 setAppIcon("red") // set icon 'assets/icon1.png'
 ```
 
-## Use `getAppIcon`
+### Use `getAppIcon`
 
 get current app icon name
 
