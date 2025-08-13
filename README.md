@@ -16,7 +16,7 @@ Programmatically change the app icon in Expo.
 npx expo install @mozzius/expo-dynamic-app-icon
 ```
 
-## Set icon file
+### Set icon file
 
 add plugins in `app.json`
 
@@ -38,14 +38,9 @@ add plugins in `app.json`
     ]
 ```
 
-## Check AndroidManifest (for android)
+#### Optional: check AndroidManifest (for android)
 
-```
-expo prebuild
-```
-
-check added line
-[AndroidManifest.xml](./example/android/app/src/main/AndroidManifest.xml#L33-L44)
+After running `expo prebuild`, check the modifications to your `AndroidManifest.xml`. Additional `activity-alias` are added for each icon.
 
 ```xml
   ...
@@ -65,11 +60,11 @@ check added line
   ...
 ```
 
-## Create new `expo-dev-client`
+### Create new `expo-dev-client`
 
-create a new `expo-dev-client` and begin using `expo-dynamic-app-icon`
+Create a new `expo-dev-client` and begin using `expo-dynamic-app-icon`!
 
-## Use `setAppIcon`
+### Use `setAppIcon`
 
 - if error, return **false**
 - else, return **changed app icon name**
@@ -85,7 +80,7 @@ import { setAppIcon } from "expo-dynamic-app-icon";
 setAppIcon("red") // set icon 'assets/icon1.png'
 ```
 
-## Use `getAppIcon`
+### Use `getAppIcon`
 
 get current app icon name
 
