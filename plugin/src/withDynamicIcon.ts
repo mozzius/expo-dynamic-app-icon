@@ -549,7 +549,9 @@ function resolveIcons(props: string[] | IconSet | void): Props["icons"] {
 }
 
 /** Resolve the required icon dimension/target based on the app config. */
-function resolveIconDimensions(config: ExportedConfig): Required<IconDimensions>[] {
+function resolveIconDimensions(
+  config: ExportedConfig
+): Required<IconDimensions>[] {
   const targets: NonNullable<IconDimensions["target"]>[] = [];
 
   if (config.ios?.supportsTablet) {

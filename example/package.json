@@ -11,18 +11,18 @@
   "dependencies": {
     "@mozzius/expo-dynamic-app-icon": "link:./../",
     "babel-plugin-module-resolver": "^5.0.2",
-    "expo": "^53.0.20",
-    "expo-splash-screen": "~0.30.10",
-    "expo-status-bar": "~2.2.3",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "react-native": "0.79.5",
-    "react-native-web": "^0.20.0"
+    "expo": "^54.0.2",
+    "expo-splash-screen": "~31.0.9",
+    "expo-status-bar": "~3.0.8",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.4",
+    "react-native-web": "^0.21.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
-    "@types/react": "~19.0.10",
-    "typescript": "~5.8.3"
+    "@types/react": "~19.1.10",
+    "typescript": "~5.9.2"
   },
   "private": true
 }
