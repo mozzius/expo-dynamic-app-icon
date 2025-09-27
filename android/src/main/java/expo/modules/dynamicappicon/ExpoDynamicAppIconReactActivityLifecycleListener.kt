@@ -57,10 +57,6 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
         }
     }
 
-    private fun onBackground() {
-        // This method is no longer used since we apply changes immediately in onPause
-    }
-
     private fun forceCloseApp(activity: Activity) {
         try {
             // Force close the app process to ensure clean restart
