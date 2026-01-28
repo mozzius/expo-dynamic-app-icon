@@ -68,7 +68,7 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
             }
 
             try {
-                // Get all launcher activities and disable all except the new one
+                // Get all launcher activities and disable all icon aliases except the new one
                 val packageInfo =
                         pm.getPackageInfo(
                                 SharedObject.packageName,
@@ -76,11 +76,19 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
                                         PackageManager.GET_DISABLED_COMPONENTS
                         )
 
+                // Only disable activities that are icon aliases (named MainActivity*)
+                // Don't disable other activities like FullscreenActivity, etc.
+                val mainActivityPrefix = "${SharedObject.packageName}.MainActivity"
+
                 packageInfo.activities?.forEach { activityInfo ->
                     val componentName = ComponentName(SharedObject.packageName, activityInfo.name)
                     val state = pm.getComponentEnabledSetting(componentName)
 
-                    if (activityInfo.name != icon &&
+                    // Only manage MainActivity and its aliases, leave other activities alone
+                    val isIconAlias = activityInfo.name.startsWith(mainActivityPrefix)
+
+                    if (isIconAlias &&
+                                    activityInfo.name != icon &&
                                     state != PackageManager.COMPONENT_ENABLED_STATE_DISABLED
                     ) {
                         pm.setComponentEnabledSetting(
