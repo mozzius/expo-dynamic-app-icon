@@ -19,17 +19,10 @@ object SharedObject {
 
 class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleListener {
     private var currentActivity: Activity? = null
-    private var isBackground = false
     private val handler = Handler(Looper.getMainLooper())
-    private val backgroundCheckRunnable = Runnable {
-        if (isBackground) {
-            onBackground()
-        }
-    }
 
     override fun onPause(activity: Activity) {
         currentActivity = activity
-        isBackground = true
         // Apply icon change immediately when app goes to background
         if (SharedObject.shouldChangeIcon) {
             applyIconChange(activity)
@@ -43,12 +36,9 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
 
     override fun onResume(activity: Activity) {
         currentActivity = activity
-        isBackground = false
-        handler.removeCallbacks(backgroundCheckRunnable)
     }
 
     override fun onDestroy(activity: Activity) {
-        handler.removeCallbacks(backgroundCheckRunnable)
         if (SharedObject.shouldChangeIcon) {
             applyIconChange(activity)
         }
