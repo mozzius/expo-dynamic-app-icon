@@ -36,6 +36,8 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
 
     override fun onResume(activity: Activity) {
         currentActivity = activity
+        // Repair any non-icon activities that were incorrectly disabled by older versions
+        repairIncorrectlyDisabledActivities(activity)
     }
 
     override fun onDestroy(activity: Activity) {
@@ -147,6 +149,47 @@ class ExpoDynamicAppIconReactActivityLifecycleListener : ReactActivityLifecycleL
             } catch (e: Exception) {
                 Log.e("IconChange", "Error enabling fallback MainActivity", e)
             }
+        }
+    }
+
+    /**
+     * Repair activities that were incorrectly disabled by older versions of this library.
+     * Re-enables any non-icon-alias activities that are currently disabled.
+     */
+    private fun repairIncorrectlyDisabledActivities(activity: Activity) {
+        val pm = activity.packageManager
+        val packageName = activity.packageName
+
+        try {
+            val packageInfo =
+                    pm.getPackageInfo(
+                            packageName,
+                            PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
+                    )
+
+            val mainActivityPrefix = "${packageName}.MainActivity"
+
+            packageInfo.activities?.forEach { activityInfo ->
+                val isIconAlias = activityInfo.name.startsWith(mainActivityPrefix)
+
+                // If it's NOT an icon alias, it should never have been disabled by us
+                if (!isIconAlias) {
+                    val componentName = ComponentName(packageName, activityInfo.name)
+                    val state = pm.getComponentEnabledSetting(componentName)
+
+                    // Re-enable if it was explicitly disabled
+                    if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
+                        pm.setComponentEnabledSetting(
+                                componentName,
+                                PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
+                                PackageManager.DONT_KILL_APP
+                        )
+                        Log.i("IconChange", "Repaired incorrectly disabled activity: ${activityInfo.name}")
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("IconChange", "Error repairing disabled activities", e)
         }
     }
 
